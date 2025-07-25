@@ -8,7 +8,10 @@ async function testConnection() {
     console.log('Testing MongoDB connection...');
     
     // Get the MongoDB URI from environment variables
-    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://hoohlala:nRQHDRF0eW8C0wMh@taskflow-cluster.kvtyyqg.mongodb.net/?retryWrites=true&w=majority&appName=TaskFlow-Cluster';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://hoohlala:nRQHDRF0eW8C0wMh@cluster0.XXXXX.mongodb.net/?retryWrites=true&w=majority';
+    
+    console.log('💡 If this fails, make sure to get the correct connection string from your Atlas dashboard');
+    console.log('💡 Look for the cluster identifier (like .abc123.) in your Atlas connection string');
     
     // Log connection string with credentials masked
     console.log('Connection string:', mongoUri.replace(/\/\/.*@/, '//***:***@'));
