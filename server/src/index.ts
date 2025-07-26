@@ -6,12 +6,11 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 
-// Import routes - COMMENTED OUT FOR TESTING
-console.log('🧪 STEP 2: Testing with NO route imports');
-// import authRoutes from './routes/auth';
-// import projectRoutes from './routes/projects';
-// import taskRoutes from './routes/tasks';
-// import rumRoutes from './routes/rum';
+// Import routes
+import authRoutes from './routes/auth';
+import projectRoutes from './routes/projects';
+import taskRoutes from './routes/tasks';
+import rumRoutes from './routes/rum';
 
 dotenv.config();
 
@@ -30,9 +29,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Rate limiting - COMMENTED OUT FOR TESTING
-console.log('🧪 STEP 3: Testing with NO rate limiters');
-/*
+// Rate limiting (Fixed: removed trailing slashes)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -41,7 +38,7 @@ const limiter = rateLimit({
     message: 'Too many requests from this IP, please try again later.'
   }
 });
-app.use('/api/', limiter);
+app.use('/api', limiter);
 
 // Special rate limit for RUM collection (more lenient)
 const rumLimiter = rateLimit({
@@ -49,8 +46,7 @@ const rumLimiter = rateLimit({
   max: 500, // Allow more RUM events
   skip: () => false // Don't skip any requests
 });
-app.use('/api/rum/', rumLimiter);
-*/
+app.use('/api/rum', rumLimiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -63,30 +59,27 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-// API Routes - ALL COMMENTED OUT FOR TESTING
-console.log('🧪 STEP 1: Testing with NO routes');
-// app.use('/api/auth', authRoutes);
-// app.use('/api/projects', projectRoutes);
-// app.use('/api/tasks', taskRoutes);
-// app.use('/api/rum', rumRoutes);
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/rum', rumRoutes);
 
-// Health check - TESTING THIS FIRST
-console.log('🧪 STEP 7A: Testing health check route');
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
     success: true,
-    message: 'TaskFlow API is running - TESTING HEALTH CHECK',
+    message: 'TaskFlow API is running',
     timestamp: new Date().toISOString(),
     version: '1.0.0'
   });
 });
 
-// 404 handler - TESTING THIS NOW
-console.log('🧪 STEP 7B: Testing 404 handler');
-app.use('/api/*', (req, res) => {
+// 404 handler (Fixed: removed problematic wildcard)
+app.use('/api', (req, res, next) => {
   res.status(404).json({
     success: false,
-    message: `API endpoint not found: ${req.method} ${req.path}`
+    message: `API endpoint not found: ${req.method} ${req.originalUrl}`
   });
 });
 
@@ -120,7 +113,7 @@ const connectDB = async () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
-      console.log(`🧪 STEP 1: If you see this message, the server works WITHOUT routes`);
+      console.log(`✅ All systems operational!`);
     });
 
   } catch (error) {
@@ -152,15 +145,7 @@ process.on('SIGTERM', () => {
   });
 });
 
-// Start the application - DB CONNECTION DISABLED FOR TESTING
-console.log('🧪 STEP 6: Testing without database connection');
-// connectDB();
-
-// Start server directly for testing
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT} - NO DATABASE`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🧪 STEP 6: If you see this, the path-to-regexp error is FIXED!`);
-});
+// Start the application
+connectDB();
 
 export default app;
