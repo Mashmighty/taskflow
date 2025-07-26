@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import User, { IUser } from '../models/User';
+import User, { IUser } from '../models/user';
 import { verifyToken } from '../utils/jwt';
 
 export interface AuthRequest extends Request {

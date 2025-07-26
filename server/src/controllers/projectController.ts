@@ -1,6 +1,8 @@
 import { Response } from 'express';
-import Project from '../models/Project';
-import Task from '../models/Task';
+import { Types } from 'mongoose';
+import Project from '../models/project';
+import Task from '../models/task';
+import User from '../models/user';
 import { AuthRequest } from '../middleware/auth';
 
 export const getProjects = async (req: AuthRequest, res: Response) => {
@@ -215,8 +217,8 @@ export const addMember = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // Find user by email
-    const user = await Project.findOne({ email });
+    // Find user by email - Fixed: Using User model instead of Project model
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -224,15 +226,26 @@ export const addMember = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    // Safe type checking: Check if user._id exists and is valid before using
+    if (!user._id) {
+      return res.status(500).json({
+        success: false,
+        message: 'Invalid user data'
+      });
+    }
+
+    const userObjectId = user._id as Types.ObjectId;
+
     // Check if already a member
-    if (project.members.includes(user._id)) {
+    if (project.members.includes(userObjectId)) {
       return res.status(400).json({
         success: false,
         message: 'User is already a member'
       });
     }
 
-    project.members.push(user._id);
+    // Safe addition of member
+    project.members.push(userObjectId);
     await project.save();
     await project.populate('members', 'name email avatar');
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
+import User from '../models/user';
 import { generateToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/auth';
 
@@ -22,7 +22,7 @@ export const register = async (req: Request, res: Response) => {
 
     // Generate token
     const token = generateToken({
-      userId: user._id.toString(),
+      userId: (user._id as any).toString(),
       email: user.email,
       role: user.role
     });
@@ -72,7 +72,7 @@ export const login = async (req: Request, res: Response) => {
 
     // Generate token
     const token = generateToken({
-      userId: user._id.toString(),
+      userId: (user._id as any).toString(),
       email: user.email,
       role: user.role
     });
