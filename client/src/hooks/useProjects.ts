@@ -22,27 +22,19 @@ interface Project {
   updatedAt: string;
 }
 
-interface CreateProjectData {
-  name: string;
-  key: string;
-  description?: string;
-  endDate?: string;
-}
-
-export const useProjects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+export const useProject = (projectId: string) => {
+  const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-  // Fetch projects
-  const fetchProjects = async () => {
+  const fetchProject = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`${API_URL}/projects`, {
+      const response = await fetch(`${API_URL}/projects/${projectId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -50,83 +42,30 @@ export const useProjects = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch projects');
+        throw new Error('Failed to fetch project');
       }
 
       const data = await response.json();
-      setProjects(data.data.projects);
+      setProject(data.data.project);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
-      toast.error('Failed to load projects');
+      toast.error('Failed to load project');
     } finally {
       setLoading(false);
     }
   };
 
-  // Create project
-  const createProject = async (projectData: CreateProjectData) => {
-    try {
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${API_URL}/projects`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(projectData)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create project');
-      }
-
-      const data = await response.json();
-      setProjects(prev => [data.data.project, ...prev]);
-      toast.success('Project created successfully!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to create project';
-      toast.error(message);
-      throw err;
-    }
-  };
-
-  // Delete project
-  const deleteProject = async (projectId: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${API_URL}/projects/${projectId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete project');
-      }
-
-      setProjects(prev => prev.filter(p => p._id !== projectId));
-      toast.success('Project archived successfully');
-    } catch (err) {
-      toast.error('Failed to delete project');
-    }
-  };
-
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    if (projectId) {
+      fetchProject();
+    }
+  }, [projectId]);
 
   return {
-    projects,
+    project,
     loading,
     error,
-    createProject,
-    deleteProject,
-    refetch: fetchProjects
+    refetch: fetchProject
   };
 };
