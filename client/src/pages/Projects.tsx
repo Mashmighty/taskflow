@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Users, Calendar, MoreVertical } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
 import Button from '../components/ui/Button';
-import Modal from '../components/ui/Modal';
 import CreateProjectModal from '../components/projects/CreateProjectModal';
 import ProjectCard from '../components/projects/ProjectCard';
 import { useProjects } from '../hooks/useProjects';
@@ -28,7 +27,6 @@ const Projects: React.FC = () => {
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
@@ -44,7 +42,6 @@ const Projects: React.FC = () => {
         </Button>
       </div>
 
-      {/* Projects Grid */}
       {projects.length === 0 ? (
         <div className="text-center py-12">
           <div className="max-w-md mx-auto">
@@ -70,7 +67,6 @@ const Projects: React.FC = () => {
         </div>
       )}
 
-      {/* Create Project Modal */}
       <CreateProjectModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

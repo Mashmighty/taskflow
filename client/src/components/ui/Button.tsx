@@ -1,5 +1,4 @@
 import React from 'react';
-import { clsx } from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
@@ -13,7 +12,7 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md',
   loading = false,
   children,
-  className,
+  className = '',
   disabled,
   ...props
 }) => {
@@ -34,13 +33,9 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={clsx(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        (disabled || loading) && 'opacity-50 cursor-not-allowed',
-        className
-      )}
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${
+        (disabled || loading) ? 'opacity-50 cursor-not-allowed' : ''
+      } ${className}`}
       disabled={disabled || loading}
       {...props}
     >

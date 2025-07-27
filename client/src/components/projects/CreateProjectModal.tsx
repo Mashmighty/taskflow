@@ -38,7 +38,6 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
   const projectName = watch('name', '');
 
-  // Auto-generate project key from name
   React.useEffect(() => {
     if (projectName) {
       const key = projectName
@@ -48,8 +47,6 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         .map(word => word.charAt(0))
         .join('')
         .slice(0, 10);
-      
-      // You might want to set this value programmatically
     }
   }, [projectName]);
 

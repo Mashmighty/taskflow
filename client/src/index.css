@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force full width */
 * {
   box-sizing: border-box;
 }
@@ -17,8 +16,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #f9fafb; /* gray-50 equivalent */
-  color: #111827; /* gray-900 equivalent */
+  background-color: #f9fafb;
+  color: #111827;
 }
 
 #root {
@@ -26,7 +25,6 @@ body {
   min-height: 100vh;
 }
 
-/* Remove any container constraints */
 .container {
   width: 100% !important;
   max-width: none !important;

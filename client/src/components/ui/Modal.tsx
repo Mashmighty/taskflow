@@ -31,7 +31,6 @@ const Modal: React.FC<ModalProps> = ({
         <div className="fixed inset-0 bg-black opacity-30" onClick={onClose} />
         
         <div className={`relative bg-white rounded-lg shadow-xl w-full ${sizeClasses[size]}`}>
-          {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
             <button
@@ -41,8 +40,6 @@ const Modal: React.FC<ModalProps> = ({
               <X size={20} />
             </button>
           </div>
-
-          {/* Content */}
           <div className="p-6">
             {children}
           </div>

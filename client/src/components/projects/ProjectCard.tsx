@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Users, Calendar, MoreVertical, Trash2, Edit } from 'lucide-react';
 import { format } from 'date-fns';
 import Button from '../ui/Button';
@@ -41,7 +40,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-      {/* Card Header */}
       <div className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
@@ -82,7 +80,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
           </div>
         </div>
 
-        {/* Status */}
         <div className="flex items-center justify-between mb-4">
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[project.status]}`}>
             {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
@@ -93,7 +90,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
           </div>
         </div>
 
-        {/* Members */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users size={16} className="text-gray-400" />
@@ -119,13 +115,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
         </div>
       </div>
 
-      {/* Card Footer */}
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <Link to={`/projects/${project._id}`}>
-          <Button variant="ghost" size="sm" className="w-full">
-            View Project
-          </Button>
-        </Link>
+        <div className="text-center text-sm text-gray-500">
+          Task Board Coming Soon
+        </div>
       </div>
     </div>
   );

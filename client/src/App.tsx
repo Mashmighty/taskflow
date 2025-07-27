@@ -6,7 +6,6 @@ import { Toaster } from 'react-hot-toast';
 // Pages
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
-import TaskBoard from './pages/TaskBoard';
 import Login from './pages/Login';
 
 // Components
@@ -25,7 +24,6 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<Dashboard />} />
               <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:projectId" element={<TaskBoard />} />
             </Routes>
           </main>
           <Toaster position="top-right" />
