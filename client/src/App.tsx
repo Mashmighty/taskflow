@@ -17,9 +17,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        {/* Remove min-h-screen and add full width classes */}
+        <div className="w-full min-h-screen bg-gray-50">
           <Navbar />
-          <main className="container mx-auto px-4 py-8">
+          {/* Remove container and px-4 constraints */}
+          <main className="w-full py-8">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<Dashboard />} />
