@@ -11,7 +11,6 @@ const taskSchema = z.object({
   description: z.string().optional(),
   type: z.enum(['TASK', 'BUG', 'STORY', 'EPIC']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']),
-  assigneeId: z.string().optional(),
   estimatedHours: z.number().min(0).optional(),
   storyPoints: z.number().min(1).max(100).optional(),
   tags: z.string().optional(),
@@ -52,8 +51,6 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         ...data,
         projectId,
         tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : [],
-        estimatedHours: data.estimatedHours || undefined,
-        storyPoints: data.storyPoints || undefined
       };
       
       await onCreateTask(taskData);
@@ -164,6 +161,14 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               helperText="Separate multiple tags with commas"
               {...register('tags')}
             />
+
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Task will be created in:</h4>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-slate-400 rounded"></div>
+                <span className="text-sm text-gray-600">To Do column</span>
+              </div>
+            </div>
           </div>
         </div>
 
